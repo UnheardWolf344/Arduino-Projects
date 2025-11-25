@@ -117,8 +117,8 @@ void handleInput(){
       inputsIndex++;
     }
 
-    bPressed = getButton(inputs, inputsSize, GamepadKeys::B);
-    leftStickX = getAnalog(inputs,inputsSize, GamepadKeys::LEFT_STICK_X);
+    bPressed = getButton(inputs, inputsSize, GamepadKeys::B, bPressed);
+    leftStickX = getAnalog(inputs, inputsSize, GamepadKeys::LEFT_STICK_X, leftStickX);
 
     delete[] inValues;
     inValues = nullptr;
@@ -170,32 +170,32 @@ void serialToValue(const String& in, Inputs inputs[], uint8_t index) {
   }
 }
 
-bool getButton(Inputs inputs[], uint8_t size, char key) {
+bool getButton(Inputs inputs[], uint8_t size, char key, const bool lastValue) {
   for (int i = 0; i < size; i++) {
     if (inputs[i].key == key) {
       return inputs[i].data.buttonValue;
     }
   }
-  return false;
+  return lastValue;
 }
 
 // overload so you can call getButton with keys
-bool getButton(Inputs inputs[], uint8_t size, GamepadKeys key) {
-  return getButton(inputs, size, (char) key);
+bool getButton(Inputs inputs[], uint8_t size, GamepadKeys key, const bool lastValue) {
+  return getButton(inputs, size, (char) key, lastValue);
 }
 
-float getAnalog(Inputs inputs[], uint8_t size, char key) {
+float getAnalog(Inputs inputs[], uint8_t size, char key, const float lastValue) {
   for (uint8_t i = 0; i < size; i++) {
     if (inputs[i].key == key) {
       return inputs[i].data.analogValue;
     }
   }
-  return 0;
+  return lastValue;
 }
 
 // overload so you can call getAnalog with keys
-float getAnalog(Inputs inputs[], uint8_t size, GamepadKeys key) {
-  return getAnalog(inputs, size, (char) key);
+float getAnalog(Inputs inputs[], uint8_t size, GamepadKeys key, const float lastValue) {
+  return getAnalog(inputs, size, (char) key, lastValue);
 }
 
 void clearInputs(Inputs inputs[], uint8_t inputsSize) {
