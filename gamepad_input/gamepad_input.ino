@@ -103,7 +103,7 @@ void loop() {
 void handleInput(){
   if (Serial.available()){
     inBuffer = Serial.readStringUntil('\n');
-    Serial.print("Recieved: ");
+    Serial.print(F("Recieved: "));
     Serial.println(inBuffer);
 
     // String* of inValuesSize size
